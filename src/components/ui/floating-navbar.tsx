@@ -6,6 +6,7 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import audioUrl from "@/assets/loop.mp3";
 
 
@@ -32,6 +33,8 @@ export const FloatingNav = ({
 
   // Ref to get direct access to the audio element
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const navigate = useNavigate()
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
@@ -108,7 +111,7 @@ export const FloatingNav = ({
         {navItems.map((navItem: any, idx: number) => (
           <a
             key={`link=${idx}`}
-            href={navItem.link}
+            onClick={()=> { navigate(`${navItem.link}`)}}
             className={cn(
               `relative dark:text-neutral-50 items-center ${(navItem.name)} flex space-x-1 text-neutral-50 dark:hover:text-neutral-300 hover:text-neutral-300`
             )}

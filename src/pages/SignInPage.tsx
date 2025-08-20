@@ -108,6 +108,7 @@ const SignInPage: React.FC = () => {
       console.log(document.cookie)
       if(result.success){
         toast.success("Form submitted successfully,signing you back");
+        toast.info("please refresh the page")
         setSignInFormData({
           email: "",
           password: "",

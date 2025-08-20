@@ -41,6 +41,7 @@ const DashBoardPage: React.FC = () => {
       if(result.success){
         document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;sameSite=Lax;Secure'
         toast.success("Logout successful!");
+        toast.info("please refresh the page")
         navigate("/")
       }
       else{

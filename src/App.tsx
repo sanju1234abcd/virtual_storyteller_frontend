@@ -28,7 +28,7 @@ function App() {
     },
     {
       name: "Create",
-      link: "/storytelling",
+      link: "/create",
       icon: (
         <BookOpenText />
       ),

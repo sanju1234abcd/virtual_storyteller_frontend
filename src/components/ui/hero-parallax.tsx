@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   motion,
@@ -7,6 +6,7 @@ import {
   useSpring,
   MotionValue,
 } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -125,6 +125,7 @@ export const ProductCard = ({
   };
   translate: MotionValue<number>;
 }) => {
+  const navigate = useNavigate();
   return (
     <motion.div
       style={{
@@ -137,7 +138,7 @@ export const ProductCard = ({
       className="group/product h-96 w-[30rem] relative shrink-0"
     >
       <a
-        href={product.link}
+        onClick={()=> { navigate(`${product.link}`) }}
         className="block group-hover/product:shadow-2xl "
       >
         <img

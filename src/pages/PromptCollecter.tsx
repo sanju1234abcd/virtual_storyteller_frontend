@@ -461,7 +461,7 @@ const PromptCollectorPage: React.FC = () => {
                     4. phonemes should be accurate
                     5. story language should be ${language} , keep this in mind specially
                     6. Output format (exactly this order, only provide these 4 things, separated by "||"):  
-                      [THUMBNAIL_IDEA(provide a thumbnail prompt for the story)] || [provide a tone for the story, should be in english only] || [STORY_TITLE] || [STORY_TEXT( strictly between 1000 - 1200 words , words should be in ${language} only, except for voice cues only)] ,provide these 4 things only, do not provide your thinking .
+                      [THUMBNAIL_IDEA(provide a thumbnail prompt for the story)] || [provide a tone for the story, should be in english only] || [STORY_TITLE] || [STORY_TEXT( strictly between 900 - 1050 words , words should be in ${language} only, except for voice cues only)] ,provide these 4 things only, do not provide your thinking .
                     `
       }
     ],
@@ -471,8 +471,6 @@ const PromptCollectorPage: React.FC = () => {
   if (storyPrompt.choices && storyPrompt.choices[0] && storyPrompt.choices[0].message.content) {
   const content = storyPrompt.choices[0].message.content;
   arr = content.split("||").map(item => item.trim());
-  console.log(arr)
-  console.log(arr[2], " ",arr[3], " ",arr[3].split(" ").length);
   setStoryTitle(arr[2]);
   setStoryText(arr[3]);
   setSubmitting("story created, now generating thumbnail");
@@ -548,7 +546,6 @@ const fetchAndConvertToBase64 = async (url: string) => {
     const ai = new GoogleGenAI({apiKey : import.meta.env.VITE_GEMINI_KEY})
     try {
     const voice_name = getVoiceFromTone(arr[1], voice);
-    console.log(voice_name)
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-preview-tts',
       contents: [{ parts: [{ text: `Narrate this story in a ${arr[1]} tone : ... ${arr[3]} ....` }]}],
@@ -644,7 +641,7 @@ audioRef.current = audio;
       toast.error("Please enter a prompt before submitting.");
       return;
     }
-    toast.success(`Prompt submitted! Language: ${language}`);
+    toast.success(`Prompt submitted! Story language: ${language} . please do not close or navigate from this page`);
 
     const token = document.cookie.split("=")[1];
 

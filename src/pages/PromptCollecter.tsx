@@ -500,7 +500,7 @@ const PromptCollectorPage: React.FC = () => {
         },1000)
 
         const response : any = await client.images.generate({
-          model : "provider-2/FLUX.1-kontext-max",
+          model : "provider-4/imagen-4", //provider-2/FLUX.1-kontext-max
           prompt: arr[0],
           n: 1,
           size: "1024x1024",

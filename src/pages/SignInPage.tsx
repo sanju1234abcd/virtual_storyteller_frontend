@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "@/AppContext";
 
 const SignInPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -23,6 +24,8 @@ const SignInPage: React.FC = () => {
   })
 
   const navigate = useNavigate()
+
+  const {setUserId} = useContext(AppContext)
 
   const validateSignUp = () => {
       const nameRegex = /^[A-Za-z]+$/;
@@ -106,9 +109,9 @@ const SignInPage: React.FC = () => {
       const expirationString = expirationTime.toUTCString();
       document.cookie = `token=${result.token};expires=${expirationString};path=/;sameSite=Lax;Secure`;
       console.log(document.cookie)
+      setUserId(result.message)
       if(result.success){
         toast.success("Form submitted successfully,signing you back");
-        toast.info("please refresh the page")
         setSignInFormData({
           email: "",
           password: "",

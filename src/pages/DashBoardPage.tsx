@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { User, BookOpen, CheckCircle, XCircle, LogOut, Home, Plus } from "lucide-react";
+import { User, BookOpen, CheckCircle, XCircle, LogOut, Home, Plus, History } from "lucide-react";
 import Lottie from "lottie-react";
 import wavingHand from "@/assets/Waving hand.json"
 import { toast } from "sonner";
@@ -215,24 +215,30 @@ const DashBoardPage: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-center gap-1 sm:gap-6 pt-4">
+        <div className="flex justify-center gap-1 sm:gap-6 pt-4 flex-wrap">
           <button
             onClick={() => {navigate('/')}}
-            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-70 sm:scale-100 rounded-2xl bg-purple-600 hover:bg-purple-700 transition text-lg font-semibold shadow-md hover:shadow-purple-500/40"
+            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-80 sm:scale-100 rounded-2xl bg-purple-600 hover:bg-purple-700 transition text-lg font-semibold shadow-md hover:shadow-purple-500/40"
           >
             <Home size={20} /> Home
           </button>
           <button
             onClick={() => {navigate('/create')}}
-            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-70 sm:scale-100 rounded-2xl bg-pink-600 hover:bg-pink-700 transition text-lg font-semibold shadow-md hover:shadow-pink-500/40"
+            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-80 sm:scale-100 rounded-2xl bg-pink-600 hover:bg-pink-700 transition text-lg font-semibold shadow-md hover:shadow-pink-500/40"
           >
             <Plus size={20} /> Create
           </button>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-70 sm:scale-100 rounded-2xl bg-red-600 hover:bg-red-700 transition text-lg font-semibold shadow-md hover:shadow-red-500/40"
+            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-80 sm:scale-100 rounded-2xl bg-red-600 hover:bg-red-700 transition text-lg font-semibold shadow-md hover:shadow-red-500/40"
           >
             <LogOut size={20} /> Logout
+          </button>
+          <button
+            onClick={()=> navigate("/history")}
+            className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-80 sm:scale-100 rounded-2xl bg-purple-600 hover:bg-purple-700 transition text-lg font-semibold shadow-md hover:shadow-red-500/40"
+          >
+            <History size={20} /> saved stories
           </button>
         </div>
       </div>

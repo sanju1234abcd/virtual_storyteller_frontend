@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from './AppContext';
 import DashBoardPage from './pages/DashBoardPage';
 import PageNotFound from './pages/PageNotFound';
+import StoryHistory from './pages/StoryHistory';
 
 
 function App() {
@@ -82,6 +83,7 @@ function App() {
         <Route path="/verify" element={<VerifyPage />} />
         <Route path="/create" element={<PromptCollecterPage />} />
         <Route path="/dashboard" element={<DashBoardPage />} />
+        <Route path="/history" element={<StoryHistory />} />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
       }

@@ -7,6 +7,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "@/AppContext";
 import OpenAI from "openai";
 import { GoogleGenAI } from "@google/genai";
+import "./PromptCollector.css";
 
 const MAX_PROMPT_LENGTH = 400;
 
@@ -248,6 +249,8 @@ const PromptCollectorPage: React.FC = () => {
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
 
+  const [saveToDb , setSavetoDb] = useState(false) ;
+
   const { userId,setStoryTitle,setStoryText,setThumbnailSrc,audioRef} = useContext(AppContext)
 
   const navigator = useNavigate();
@@ -386,6 +389,20 @@ const PromptCollectorPage: React.FC = () => {
   // Fallback if no keyword matched
   return gender === "female" ? "Kore" : "Charon";
 }
+// audio upload to cloud
+  const uploadAudio = async (file : Blob) => {
+  const data = new FormData();
+  data.append('file', file);
+  data.append('upload_preset', 'first_time_using_cloudinary');
+  data.append('cloud_name', 'dxm27kskt'); // replace with your cloud name
+
+  const res = await fetch('https://api.cloudinary.com/v1_1/dxm27kskt/video/upload', {
+    method: 'POST',
+    body: data
+  });
+  const json = await res.json();
+  return json.url;
+};
 
   const handleTextToStory = async()=>{
 
@@ -598,9 +615,46 @@ const fetchAndConvertToBase64 = async (url: string) => {
 
 // Usage in React
 const wavBlob = base64ToWavBlob(base64Data);
-const audioUrl = URL.createObjectURL(wavBlob);
-const audio = new Audio(audioUrl);
-audioRef.current = audio;
+// cloudinary approach ->
+if(saveToDb){
+try {
+  setSubmitting(`uploading audio to cloud , ${Math.floor(Math.random() * (40 - 10 + 1)) + 10}%`)
+  setTimeout(() => {
+   setSubmitting(`uploading audio to cloud , ${Math.floor(Math.random() * (75 - 40 + 1)) + 40}%`)
+  }, 35000);
+  setTimeout(() => {
+   setSubmitting(`uploading audio to cloud , ${Math.floor(Math.random() * (100 - 75 + 1)) + 75}%`)
+  }, 70000);
+  const storyAudioUrl = await uploadAudio(wavBlob);
+  const audio = new Audio(storyAudioUrl);
+  audioRef.current = audio;
+  // saving story in db
+  const storyResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/storyLinkSave`, {
+    method: "POST",
+    headers : {
+      "Content-Type": "application/json",
+    },
+    body : JSON.stringify({userId : userId , link : storyAudioUrl , title : arr[2]})
+  })
+  const storyResult = await storyResponse.json();
+  if(!storyResult.success){
+    toast.error("error saving story link in db, unable to connect to cloud");
+  }
+  else{
+    toast.success("story link saved in db")
+  }
+} catch (error) {
+  toast.error("cloud uploading failed , unable to connect to cloud")
+  const audioUrl = URL.createObjectURL(wavBlob);
+  const audio = new Audio(audioUrl);
+  audioRef.current = audio;
+}
+}
+else{
+  const audioUrl = URL.createObjectURL(wavBlob);
+  const audio = new Audio(audioUrl);
+  audioRef.current = audio;
+}
 
   //now reducing story limit
   const token = document.cookie.split("=")[1];
@@ -738,12 +792,12 @@ audioRef.current = audio;
           />
 
           <div className="flex items-center justify-between w-[90dvw] sm:max-w-xs sm:mx-auto sm:min-w-full sm:space-x-4">
-            <div className="text-gray-300 scale-60 sm:scale-100 select-none text-sm whitespace-nowrap">
+            <div className="text-gray-300 self-start scale-60 sm:scale-100 select-none text-sm whitespace-nowrap">
               {prompt.length} / {MAX_PROMPT_LENGTH}
             </div>
 
             <div className="w-[60%] pr-0 sm:w-fit flex items-center justify-end-safe flex-wrap md:justify-between md:gap-3">
-              <div className="flex items-center gap-2 scale-60 sm:scale-100">
+              <div className="flex items-center gap-2 scale-60 sm:scale-85">
               <label
                 htmlFor="language"
                 className="text-white font-semibold select-none whitespace-nowrap"
@@ -765,7 +819,7 @@ audioRef.current = audio;
               </select>
             </div>
             
-            <div className="flex items-center gap-2 scale-60 sm:scale-100">
+            <div className="flex items-center gap-2 scale-60 sm:scale-85">
               <label
                 htmlFor="language"
                 className="text-white font-semibold select-none whitespace-nowrap"
@@ -786,9 +840,16 @@ audioRef.current = audio;
                 ))}
               </select>
             </div>
+
+            <div className="flex items-center gap-2 scale-60 sm:scale-85">
+              <div className="text-md text-white">save audio</div>
+              <div className="check" title="enable this option when you want to save the audio as a link to retrieve later from history" >
+                <input id="check" type="checkbox" onClick={()=> { setSavetoDb((prev)=> !prev) ; toast.info(`audio saving ${saveToDb ? "disabled" : "enabled (may take 2-3 minutes extra for cloud saving)"}`)}} disabled = {loading}/>
+                <label htmlFor="check"></label>
+              </div>
             </div>
 
-            
+            </div>
 
           </div>
 

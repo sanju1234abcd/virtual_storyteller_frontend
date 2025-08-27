@@ -425,8 +425,7 @@ const PromptCollectorPage: React.FC = () => {
 
                               User Idea: ${prompt} 
 `
-    const openai = new OpenAI({baseURL:"https://api.a4f.co/v1",apiKey:import.meta.env.VITE_A4F_KEY,dangerouslyAllowBrowser:true})
-
+    const ai = new GoogleGenAI({apiKey : import.meta.env.VITE_GEMINI_KEY})
     // story text and title setting and thumbnail prompt and tone generation (arr[0] and arr[1])
     var arr: string[] = []
     var createdImage : any = null;
@@ -435,15 +434,9 @@ const PromptCollectorPage: React.FC = () => {
       setSubmitting(`prompt optimizing , ${Math.floor(Math.random() * (100 - 40 + 1)) + 40}%`)
     },1000);
     //betterment prompt
-    const betterPrompt = await openai.chat.completions.create({
-    model: "provider-6/gemini-2.5-flash-thinking",
-    messages: [
-      {
-        "role": "user",
-        "content": bettermentPrompt
-      }
-    ],
-    
+    const betterPrompt = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents : bettermentPrompt
   });
   setSubmitting(`prompt optimized, now generating story`)
 
@@ -451,12 +444,9 @@ const PromptCollectorPage: React.FC = () => {
       setSubmitting(`creating story , ${Math.floor(Math.random() * (100 - 40 + 1)) + 40}%`)
   },10000);
   //create story
-  const storyPrompt = await openai.chat.completions.create({
-    model: "provider-6/gemini-2.5-flash-thinking", //provider-2/gpt-5-nano //provider-2/llama-4-maverick // provider-3/llama-3.3-70b //provider-3/deepseek-v3 
-    messages: [
-      {
-        "role": "user",
-        "content": `${betterPrompt.choices![0]!.message.content}, 1. Write it as if for a live dramatic narration, adding voice performance cues in parentheses, choose from them only:
+  const storyPrompt = await ai.models.generateContent({
+    model: "gemini-2.5-flash", //provider-2/gpt-5-nano //provider-2/llama-4-maverick // provider-3/llama-3.3-70b //provider-3/deepseek-v3 
+    contents : `${betterPrompt.text}, 1. Write it as if for a live dramatic narration, adding voice performance cues in parentheses, choose from them only:
                       - [angry] : Angry  
                       - [excited] : Excited  
                       - [worried] : Worried  
@@ -480,13 +470,10 @@ const PromptCollectorPage: React.FC = () => {
                     6. Output format (exactly this order, only provide these 4 things, separated by "||"):  
                       [THUMBNAIL_IDEA(provide a thumbnail prompt for the story)] || [provide a tone for the story, should be in english only] || [STORY_TITLE] || [STORY_TEXT( strictly between 900 - 1050 words , words should be in ${language} only, except for voice cues only)] ,provide these 4 things only, do not provide your thinking .
                     `
-      }
-    ],
-    
   });
 
-  if (storyPrompt.choices && storyPrompt.choices[0] && storyPrompt.choices[0].message.content) {
-  const content = storyPrompt.choices[0].message.content;
+  if (storyPrompt.text) {
+  const content = storyPrompt.text;
   arr = content.split("||").map(item => item.trim());
   setStoryTitle(arr[2]);
   setStoryText(arr[3]);
@@ -560,7 +547,6 @@ const fetchAndConvertToBase64 = async (url: string) => {
   // now most important , voice generation
 
   if( arr.length >= 4 && createdImage && arr[3] && arr[3].trim() !== "" && arr[1] && arr[1].trim() !== ""){
-    const ai = new GoogleGenAI({apiKey : import.meta.env.VITE_GEMINI_KEY})
     try {
     const voice_name = getVoiceFromTone(arr[1], voice);
     const response = await ai.models.generateContent({

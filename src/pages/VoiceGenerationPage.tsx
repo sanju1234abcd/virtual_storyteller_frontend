@@ -269,7 +269,7 @@ const VoiceGenerationPage: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] text-white px-4 py-6"
+      className="relative h-fit flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] text-white px-4 py-6"
     >
       {/* Star background */}
       <canvas

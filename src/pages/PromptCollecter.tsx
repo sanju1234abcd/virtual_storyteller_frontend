@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { toast } from "sonner";
 import RotatingText from "@/components/RotatingText/RotatingText";
 import { LoaderOne } from "@/components/ui/loader";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "@/AppContext";
 import OpenAI from "openai";
 import { GoogleGenAI } from "@google/genai";
@@ -703,6 +703,10 @@ else{
         setLoading(false);
         setPrompt("")
       }
+    }else{
+      toast.error("something went wrong while accessing your account");
+        setLoading(false);
+        setPrompt("")
     }
 
     
@@ -771,14 +775,15 @@ else{
             maxLength={MAX_PROMPT_LENGTH}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            className=" w-[90dvw] md:w-full min-h-[130px] rounded-xl bg-black/70 text-white placeholder-gray-400 px-6 py-4 text-sm sm:text-lg resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
+            className=" w-[90dvw] mb-1 md:w-full min-h-[130px] rounded-xl bg-black/70 text-white placeholder-gray-400 px-6 py-4 text-sm sm:text-lg resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
             spellCheck={false}
             required
             disabled = {loading}
           />
+          <p className="w-full text-xs sm:text-lg text-start py-0 text-white/50">want your own text converted into high quality audio? we got you. <Link to="/voice" className={`text-pink-500 hover:text-pink-600 ${loading ? "pointer-events-none" : ""}`}>click here</Link></p>
 
           <div className="flex items-center justify-between w-[90dvw] sm:max-w-xs sm:mx-auto sm:min-w-full sm:space-x-4">
-            <div className="text-gray-300 self-start scale-60 sm:scale-100 select-none text-sm whitespace-nowrap">
+            <div className="text-gray-300 self-start scale-90 sm:scale-100 select-none text-sm whitespace-nowrap">
               {prompt.length} / {MAX_PROMPT_LENGTH}
             </div>
 

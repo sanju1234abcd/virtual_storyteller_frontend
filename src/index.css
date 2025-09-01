@@ -129,3 +129,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Slower clockwise spin */
+@keyframes spin-fast {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-fast {
+  animation: spin-fast 0.5s linear infinite;
+}
+
+/* Counterclockwise spin */
+@keyframes spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 0.5s linear infinite;
+}
+

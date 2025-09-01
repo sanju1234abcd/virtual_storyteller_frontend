@@ -12,6 +12,8 @@ import { AppContext } from './AppContext';
 import DashBoardPage from './pages/DashBoardPage';
 import PageNotFound from './pages/PageNotFound';
 import StoryHistory from './pages/StoryHistory';
+import VoiceGenerationPage from './pages/VoiceGenerationPage';
+import LoadingPage from './pages/LoadingPage';
 
 
 function App() {
@@ -82,11 +84,13 @@ function App() {
         <Route path="/storytelling" element={<StoryTellingPage />} />
         <Route path="/verify" element={<VerifyPage />} />
         <Route path="/create" element={<PromptCollecterPage />} />
+        <Route path="/voice" element={<VoiceGenerationPage />} />
         <Route path="/dashboard" element={<DashBoardPage />} />
         <Route path="/history" element={<StoryHistory />} />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
       }
+      {loading && <LoadingPage/>}
     </div>
   )
 }

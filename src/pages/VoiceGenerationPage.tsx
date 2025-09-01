@@ -322,7 +322,7 @@ const VoiceGenerationPage: React.FC = () => {
             className="w-full h-32 p-3 rounded-lg bg-gray-800 text-white outline-none resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
             required
           />
-          <p className="w-full text-xs sm:text-[2.5dvh] text-start py-0 text-white/50">want to create story from your idea ? <Link to="/create" className="text-pink-500 hover:text-pink-600">click here</Link></p>
+          <p className="w-full text-xs sm:text-[2.5dvh] text-start py-0 text-white/50">want to create story from your idea ? <Link to="/create" className={`text-pink-500 hover:text-pink-600 ${loading ? "pointer-events-none" : ""}`}>click here</Link></p>
 
           <div className="w-full flex items-center justify-between space-x-4">
             <p className="text-sm text-gray-400">{text.length} / 10000</p>

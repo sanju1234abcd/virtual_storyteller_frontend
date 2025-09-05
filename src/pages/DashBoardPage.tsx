@@ -125,21 +125,18 @@ const DashBoardPage: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 via-purple-900 to-black text-white p-6">
       {/* branding */}
       <div ref={logoRef} className="flex flex-col items-center gap-2 mb-8">
-        <h1 className="text-4xl font-bold tracking-wide flex items-center gap-2">
-          <span className="text-purple-600">Story</span>
-          <span className="text-pink-500">Sphere</span>
-        </h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl sm:text-3xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+        <p className="text-gray-400 text-sm">
           Your personal AI storytelling dashboard ✨
         </p>
       </div>
       <div
         ref={containerRef}
-        className="w-full max-w-3xl bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 space-y-8 border border-white/20"
+        className="w-full max-w-3xl sm:bg-white/10 sm:backdrop-blur-lg sm:rounded-3xl sm:shadow-2xl p-8 space-y-8 sm:border sm:border-white/20 pb-15 md:pb-0"
       >
         {/* Profile Section */}
-        <div className="flex items-center justify-center flex-wrap gap-4 bg-gradient-to-r from-purple-600/30 to-pink-600/30 p-4 rounded-2xl shadow-lg">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 flex items-center justify-center font-bold text-lg">
+        <div className="flex items-center justify-start flex-wrap gap-4 bg-gradient-to-r from-purple-600/30 to-pink-600/30 p-4 rounded-2xl shadow-lg">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 flex items-center justify-center font-bold text-2xl">
             {userData.name[0]}
           </div>
           <div>
@@ -149,8 +146,8 @@ const DashBoardPage: React.FC = () => {
         </div>
 
         {/* Welcome */}
-        <h2 className="text-2xl font-semibold flex items-center gap-2">
-            Welcome back, {userData.name}
+        <h2 className="text-xl sm:text-2xl font-semibold flex items-center gap-2">
+            Welcome , {userData.name}
             <Lottie animationData={wavingHand} loop={true} className="w-10 h-10" />
         </h2>
 
@@ -223,7 +220,7 @@ const DashBoardPage: React.FC = () => {
             <Home size={20} /> Home
           </button>
           <button
-            onClick={() => {navigate('/create')}}
+            onClick={() => navigate(`${window.innerWidth > 768 ? "/create" : "/storyType"}`)}
             className="flex items-center gap-2 px-3 sm:px-6 py-3 scale-80 sm:scale-100 rounded-2xl bg-pink-600 hover:bg-pink-700 transition text-lg font-semibold shadow-md hover:shadow-pink-500/40"
           >
             <Plus size={20} /> Create

@@ -243,7 +243,6 @@ const voiceMapping: { [key: string]: { female: string; male: string } } = {
 };
 
 const PromptCollectorPage: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
@@ -291,72 +290,6 @@ const PromptCollectorPage: React.FC = () => {
         },
       }
     );
-  }, []);
-
-  // Starry background
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
-    type Star = { x: number; y: number; radius: number; speed: number };
-    let stars: Star[] = [];
-
-    for (let i = 0; i < 100; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.5,
-        speed: Math.random() * 0.5 + 0.05,
-      });
-    }
-
-    const drawStars = () => {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "white";
-      stars.forEach((star) => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    };
-
-    const updateStars = () => {
-      stars.forEach((star) => {
-        star.y += star.speed;
-        if (star.y > height) {
-          star.y = 0;
-          star.x = Math.random() * width;
-        }
-      });
-    };
-
-    let animationFrameId: number;
-    const animate = () => {
-      drawStars();
-      updateStars();
-      animationFrameId = requestAnimationFrame(animate);
-    };
-    animate();
-
-    const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
   }, []);
 
   // Load suggestions when language changes
@@ -727,20 +660,17 @@ else{
   if(userId){
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] overflow-auto flex flex-col items-center justify-center p-4 sm:p-8">
-      {/* Star background */}
-      <canvas
-        ref={canvasRef}
-        className="fixed top-0 left-0 w-screen h-screen z-1 pointer-events-none"
-      />
+      
 
       {/* Content */}
       <div
         ref={contentRef}
         className="relative z-20 w-full max-w-5xl rounded-3xl p-4 sm:p-12"
       >
+      <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
         <h1
           ref={headingRef}
-          className="text-2xl md:text-4xl flex flex-wrap items-center justify-center gap-3 font-extrabold text-white mb-8 tracking-tight text-center select-none drop-shadow-lg"
+          className="text-xl sm:text-2xl md:text-4xl flex flex-wrap items-center justify-center gap-3 font-extrabold text-white mb-8 tracking-tight text-center select-none drop-shadow-lg"
         >
           💡 Share Your Story Ideas of 
             <RotatingText 
@@ -758,7 +688,7 @@ else{
         </h1>
         <p
           ref={subtitleRef}
-          className="text-gray-300 text-sm md:text-xl mb-12 text-center max-w-3xl mx-auto"
+          className="text-gray-300 text-sm md:text-xl mb-2 sm:mb-12 text-center max-w-3xl mx-auto"
         >
           Enter a prompt or story idea and select your story language. Click any
           suggestion to quickly use it.
@@ -780,18 +710,18 @@ else{
             required
             disabled = {loading}
           />
-          <p className="w-full text-xs sm:text-lg text-start py-0 text-white/50">want your own text converted into high quality audio? we got you. <Link to="/voice" className={`text-pink-500 hover:text-pink-600 ${loading ? "pointer-events-none" : ""}`}>click here</Link></p>
+          <p className="w-full text-xs sm:text-lg text-start py-0 text-white/50 hidden sm:block">want your own text converted into high quality audio? we got you. <Link to="/voice" className={`text-pink-500 hover:text-pink-600 ${loading ? "pointer-events-none" : ""}`}>click here</Link></p>
 
           <div className="flex items-center justify-between w-[90dvw] sm:max-w-xs sm:mx-auto sm:min-w-full sm:space-x-4">
-            <div className="text-gray-300 self-start scale-90 sm:scale-100 select-none text-sm whitespace-nowrap">
+            <div className="text-gray-300 scale-90 sm:scale-100 select-none text-sm whitespace-nowrap">
               {prompt.length} / {MAX_PROMPT_LENGTH}
             </div>
 
-            <div className="w-[60%] pr-0 sm:w-fit flex items-center justify-end-safe flex-wrap md:justify-between md:gap-3">
-              <div className="flex items-center gap-2 scale-60 sm:scale-85">
+            <div className="w-[80%] pr-0 sm:w-fit flex items-center justify-end-safe flex-nowrap sm:flex-wrap md:justify-between md:gap-3">
+              <div className="flex items-center lang gap-2 scale-60 sm:scale-85">
               <label
                 htmlFor="language"
-                className="text-white font-semibold select-none whitespace-nowrap"
+                className="text-white font-semibold select-none whitespace-nowrap hidden sm:inline-block"
               >
                 Story Language:
               </label>
@@ -810,10 +740,10 @@ else{
               </select>
             </div>
             
-            <div className="flex items-center gap-2 scale-60 sm:scale-85">
+            <div className="flex items-center voic gap-2 scale-60 sm:scale-85">
               <label
                 htmlFor="language"
-                className="text-white font-semibold select-none whitespace-nowrap"
+                className="text-white font-semibold select-none whitespace-nowrap hidden sm:inline-block"
               >
                 Narrator voice:
               </label>

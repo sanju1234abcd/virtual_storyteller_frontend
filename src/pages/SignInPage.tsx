@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "@/AppContext";
 
 const SignInPage: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const formRef = useRef<HTMLDivElement | null>(null);
   const fieldsRef = useRef<(HTMLInputElement | HTMLButtonElement | null)[]>([]);
   const [isSignUp, setIsSignUp] = useState(true);
@@ -41,6 +40,10 @@ const SignInPage: React.FC = () => {
       }
       if (!emailRegex.test(signUpFormData.email)) {
         toast("Invalid email address");
+        return false;
+      }
+      if (signUpFormData.password.length < 8) {
+        toast("Password must be at least 8 characters long");
         return false;
       }
       if (signUpFormData.password !== signUpFormData.confirmPassword) {
@@ -154,62 +157,6 @@ const SignInPage: React.FC = () => {
     }
   }, [isSignUp]);
 
-  // Starry background animation
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let stars: { x: number; y: number; radius: number; speed: number }[] = [];
-    for (let i = 0; i < 100; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5,
-        speed: Math.random() * 0.5,
-      });
-    }
-
-    const drawStars = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      stars.forEach((star) => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    };
-
-    const updateStars = () => {
-      stars.forEach((star) => {
-        star.y += star.speed;
-        if (star.y > canvas.height) {
-          star.y = 0;
-          star.x = Math.random() * canvas.width;
-        }
-      });
-    };
-
-    const animate = () => {
-      drawStars();
-      updateStars();
-      requestAnimationFrame(animate);
-    };
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   // Common input styles
   const inputClass =
     "px-4 py-2 rounded-lg bg-white/5 text-white placeholder-gray-300 border border-transparent " +
@@ -217,10 +164,7 @@ const SignInPage: React.FC = () => {
     "hover:shadow-[0_0_10px_rgba(168,85,247,0.8)]";
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Stars Background */}
-      <canvas ref={canvasRef} className="absolute z-2" />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1a2f]/80 to-black/80 z-0" />
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[#0a1a2f]/80 to-black/80">
 
       {/* Cube Container */}
       <div className="relative z-10 w-full max-w-md perspective h-screen flex justify-center">
@@ -232,10 +176,10 @@ const SignInPage: React.FC = () => {
           {/* Sign Up Form */}
           <div
             ref={formRef}
-            className="absolute scale-75 sm:scale-100 w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-lg shadow-purple-500/20 backface-hidden"
+            className="absolute scale-85 sm:scale-100 w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-lg shadow-purple-500/20 backface-hidden"
           >
-            <h2 className="text-3xl font-bold text-white text-center mb-6 animate-pulse">
-              ✨ Welcome to Storysphere ✨
+            <h2 className="text-2xl sm:text-3xl font-bold font-lobster text-white text-center mb-6 animate-pulse">
+              ✨ Welcome to SWARN ✨
             </h2>
             <p className="text-center text-gray-300 mb-8">
               Create your account and start telling magical stories.
@@ -250,7 +194,7 @@ const SignInPage: React.FC = () => {
                   placeholder="First name"
                   className={`w-1/2 ${inputClass}`}
                   value={signUpFormData.firstName}
-                  onChange={(e) => setSignUpFormData({ ...signUpFormData, firstName: e.target.value })}
+                  onChange={(e) => e.target.value.length <= 30 && setSignUpFormData({ ...signUpFormData, firstName: e.target.value })}
                   required
                 />
                 <input
@@ -261,7 +205,7 @@ const SignInPage: React.FC = () => {
                   placeholder="Last name"
                   className={`w-1/2 ${inputClass}`}
                   value={signUpFormData.lastName}
-                  onChange={(e) => setSignUpFormData({ ...signUpFormData, lastName: e.target.value })}
+                  onChange={(e) => e.target.value.length <= 30 && setSignUpFormData({ ...signUpFormData, lastName: e.target.value })}
                   required
                 />
               </div>
@@ -284,7 +228,7 @@ const SignInPage: React.FC = () => {
                 placeholder="Password"
                 className={`w-full ${inputClass}`}
                 value={signUpFormData.password}
-                onChange={(e) => setSignUpFormData({ ...signUpFormData, password: e.target.value })}
+                onChange={(e) => e.target.value.length <= 10 && setSignUpFormData({ ...signUpFormData, password: e.target.value })}
                 required
               />
               <input
@@ -295,7 +239,7 @@ const SignInPage: React.FC = () => {
                 placeholder="Confirm password"
                 className={`w-full ${inputClass}`}
                 value={signUpFormData.confirmPassword}
-                onChange={(e) => setSignUpFormData({ ...signUpFormData, confirmPassword: e.target.value })}
+                onChange={(e) => e.target.value.length <= 10 && setSignUpFormData({ ...signUpFormData, confirmPassword: e.target.value })}
                 required
               />
               <button
@@ -322,8 +266,8 @@ const SignInPage: React.FC = () => {
           </div>
 
           {/* Sign In Form */}
-          <div className="absolute w-full scale-75 sm:scale-100 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-lg shadow-purple-500/20 backface-hidden rotate-y-180">
-            <h2 className="text-3xl font-bold text-white text-center mb-6 animate-pulse">
+          <div className="absolute w-full scale-85 sm:scale-100 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-lg shadow-purple-500/20 backface-hidden rotate-y-180">
+            <h2 className="text-2xl sm:text-3xl font-bold font-lobster text-white text-center mb-6 animate-pulse">
               🔑 Welcome Back
             </h2>
             <p className="text-center text-gray-300 mb-8">
@@ -343,7 +287,7 @@ const SignInPage: React.FC = () => {
                 placeholder="Password"
                 className={`w-full ${inputClass}`}
                 value={signInFormData.password}
-                onChange={(e) => setSignInFormData({ ...signInFormData, password: e.target.value })}
+                onChange={(e) => e.target.value.length <= 10 && setSignInFormData({ ...signInFormData, password: e.target.value })}
                 required
               />
               <button

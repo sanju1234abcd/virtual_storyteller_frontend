@@ -16,7 +16,6 @@ const VoiceGenerationPage: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLInputElement | null>(null);
 
@@ -32,78 +31,12 @@ const VoiceGenerationPage: React.FC = () => {
     }
   }, []);
 
-  // Starry background
-    useEffect(() => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-  
-      let width = window.innerWidth;
-      let height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-  
-      type Star = { x: number; y: number; radius: number; speed: number };
-      let stars: Star[] = [];
-  
-      for (let i = 0; i < 100; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 1.5,
-          speed: Math.random() * 0.5 + 0.05,
-        });
-      }
-  
-      const drawStars = () => {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = "white";
-        stars.forEach((star) => {
-          ctx.beginPath();
-          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      };
-  
-      const updateStars = () => {
-        stars.forEach((star) => {
-          star.y += star.speed;
-          if (star.y > height) {
-            star.y = 0;
-            star.x = Math.random() * width;
-          }
-        });
-      };
-  
-      let animationFrameId: number;
-      const animate = () => {
-        drawStars();
-        updateStars();
-        animationFrameId = requestAnimationFrame(animate);
-      };
-      animate();
-  
-      const handleResize = () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-      };
-      window.addEventListener("resize", handleResize);
-  
-      return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animationFrameId);
-      };
-    }, []);
-
   const textToVoice = async()=>{
     try{
     const ai = new GoogleGenAI({apiKey : import.meta.env.VITE_GEMINI_KEY})
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-preview-tts',
-      contents: [{ parts: [{ text: `${customPrompt ? `${customPrompt} : ` : ""} ${text}` }]}],
+      contents: [{ parts: [{ text: `${customPrompt ? `${customPrompt} : ` : "say this : "} ${text}` }]}],
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
@@ -200,6 +133,7 @@ const VoiceGenerationPage: React.FC = () => {
     
         if(result.success){
           if(result.user.storyLimit.remaining >=1){
+            toast.success("voice generated started . please wait for completion .")
             await textToVoice();
             setLoading(false)
           }else{
@@ -271,17 +205,16 @@ const VoiceGenerationPage: React.FC = () => {
       ref={containerRef}
       className="relative h-fit flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] text-white px-4 py-6"
     >
-      {/* Star background */}
-      <canvas
-        ref={canvasRef}
-        className="fixed top-0 left-0 w-screen h-screen z-1 pointer-events-none"
-      />
-
-      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 mt-8 text-center">
+      <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 mt-4 text-center">
         🎙️ <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">Create Your Custom Narration</span>
       </h1>
       <p className="text-sm sm:text-lg w-[80%] sm:w-[90%] text-center text-white/60 mb-2">
-        Convert your text into lifelike speech with customizable narration styles . be it for your youtube shorts or an audiobook for your own story with a whopping 10000 characters
+        {window.innerWidth > 768 ? 
+          "Convert your text into lifelike speech with customizable narration styles . be it for your youtube shorts or an audiobook for your own story with a whopping 10000 characters limit" 
+          :
+          "Convert your text into lifelike speech with a whopping 10000 character limit"
+        }
       </p>
 
       <div className="flex flex-col md:flex-row gap-6 w-full max-w-6xl">
@@ -301,28 +234,31 @@ const VoiceGenerationPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="font-medium block mb-1">
+            <label className="font-medium block mb-1 text-sm sm:text-md">
               Custom Narration Prompt:
             </label>
             <textarea
               value={customPrompt}
-              onChange={(e) => setCustomPrompt(e.target.value)}
+              onChange={(e) => e.target.value.length <= 100 && setCustomPrompt(e.target.value)}
               placeholder='e.g. "say this in a cheerful manner"'
-              className="w-full h-15 p-3 rounded-lg bg-gray-800 text-white outline-none resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
+              className="w-full h-15 p-3 rounded-lg bg-gray-800 placeholder:text-[2.4dvh] sm:placeholder:text-md text-white outline-none resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
             />
+            <div className="w-full flex items-center justify-between space-x-4">
+              <p className="text-sm text-gray-400">{customPrompt.length} / 100</p>
+            </div>
           </div>
 
-          <label className="font-medium block mb-1">Text :</label>
+          <label className="font-medium block mb-1 text-sm sm:text-md">Text :</label>
           <textarea
             value={text}
             onChange={(e) =>
               e.target.value.length <= 10000 && setText(e.target.value)
             }
             placeholder="Write your text here..."
-            className="w-full h-32 p-3 rounded-lg bg-gray-800 text-white outline-none resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
+            className="w-full h-80 md:h-32 p-3 rounded-lg bg-gray-800 placeholder:text-[2.4dvh] sm:placeholder:text-md text-white outline-none resize-none border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-md shadow-purple-900/50 hover:shadow-purple-600/70"
             required
           />
-          <p className="w-full text-xs sm:text-[2.5dvh] text-start py-0 text-white/50">want to create story from your idea ? <Link to="/create" className={`text-pink-500 hover:text-pink-600 ${loading ? "pointer-events-none" : ""}`}>click here</Link></p>
+          <p className="w-full text-xs sm:text-[2.5dvh] text-start py-0 text-white/50 hidden sm:block">want to create story from your idea ? <Link to="/create" className={`text-pink-500 hover:text-pink-600 ${loading ? "pointer-events-none" : ""}`}>click here</Link></p>
 
           <div className="w-full flex items-center justify-between space-x-4">
             <p className="text-sm text-gray-400">{text.length} / 10000</p>

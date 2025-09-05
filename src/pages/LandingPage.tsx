@@ -14,7 +14,7 @@ import exampleImage4 from "@/assets/example_4.png";
 import exampleImage5 from "@/assets/example_5.png";
 import exampleImage6 from "@/assets/example_6.png";
 import exampleImage7 from "@/assets/example_7.png";
-
+import mainLogo from "@/assets/main_logo.jpg"
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { AppContext } from "@/AppContext";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ import profileBoy from "@/assets/profile_boy.json"
 gsap.registerPlugin(ScrollTrigger)
 
 const LandingPage : React.FC = ()=> {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const getStartedRef = useRef<HTMLButtonElement>(null);
   const signUpRef = useRef<HTMLButtonElement>(null);
   const featureRefs = useRef<HTMLDivElement[]>([]);
@@ -129,6 +128,22 @@ const LandingPage : React.FC = ()=> {
       opacity: 0,
     });
 
+    // Animation sequence
+    gsap.to(getStartedRef.current, {
+      opacity: 1,
+      duration: 0.8,
+      delay: 1.2,
+      ease: "back.out(1.7)",
+    });
+
+    gsap.to(signUpRef.current, {
+      opacity: 1,
+      scale: 1.2,
+      duration: 0.8,
+      delay: 1.4,
+      ease: "back.out(1.7)",
+    });
+
     //features gsap
     if (titleRef.current) {
       gsap.fromTo(
@@ -198,91 +213,10 @@ const LandingPage : React.FC = ()=> {
       }
     );
 
-    // Animation sequence
-    gsap.to(getStartedRef.current, {
-      opacity: 1,
-      duration: 0.8,
-      delay: 2.5,
-      ease: "back.out(1.7)",
-    });
-
-    gsap.to(signUpRef.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.8,
-      delay: 2.7,
-      ease: "back.out(1.7)",
-    });
-
-    //sparticles
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let particles: { x: number; y: number; size: number; speedX: number; speedY: number }[] = [];
-    let animationFrameId: number;
-
-    const createParticles = () => {
-      particles = [];
-      for (let i = 0; i < 100; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 2 + 1,
-          speedX: (Math.random() - 0.5) * 0.5,
-          speedY: (Math.random() - 0.5) * 0.5,
-        });
-      }
-    };
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      createParticles();
-    };
-
-    const drawParticles = () => {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-        ctx.shadowColor = "white";
-        ctx.shadowBlur = 10;
-        ctx.fill();
-      });
-    };
-
-    const updateParticles = () => {
-      particles.forEach((p) => {
-        p.x += p.speedX;
-        p.y += p.speedY;
-
-        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-      });
-    };
-
-    const animate = () => {
-      drawParticles();
-      updateParticles();
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    resizeCanvas();
-    animate();
-
-    window.addEventListener("resize", resizeCanvas);
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", resizeCanvas);
-    };
   }, []);
 
   return (
-    <div className="relative w-screen h-full bg-gray-900 overflow-x-hidden">
+    <div className="relative w-screen h-full overflow-x-hidden">
 
 
     {/*user show*/}
@@ -291,9 +225,6 @@ const LandingPage : React.FC = ()=> {
         <Lottie title="go to dashboard" onClick={() => navigate("/dashboard")} animationData={profileBoy} loop={true} className="w-20 h-20 scale-150 cursor-pointer" />
       </div> }
       
-
-      {/* Sparkle Background */}
-      <canvas ref={canvasRef} className="fixed top-0 left-0 w-screen h-screen"></canvas>
       {/*content*/}
       
       <div className="relative z-10 text-white h-full">
@@ -301,12 +232,14 @@ const LandingPage : React.FC = ()=> {
           id="hero"
           className="flex flex-col items-center justify-center text-center py-20 h-screen"
         >
+          <div className="h-30 w-30 flex items-center justify-center rounded-full overflow-hidden mb-5">
+            <img src={mainLogo} alt="" className="h-full w-full object-fill" />
+          </div>
+          <TypingAnimation className="text-4xl sm:text-6xl font-bold font-lobster mb-0 sm:mb-6 drop-shadow-lg flex" duration={40}>✨ SWARN ✨</TypingAnimation>
           
-          <TypingAnimation className="text-6xl font-bold mb-6 drop-shadow-lg flex" duration={40}>✨ Storysphere ✨</TypingAnimation>
-          
-          <TextGenerateEffect className="text-xl max-w-2xl" startDelay={0.3} words="Your AI-powered magical storyteller. Create immersive tales with a single prompt."/>
+          <TextGenerateEffect className="text-xl max-w-2xl font-light mb-10 sm:mb-0" startDelay={0.3} words="YOUR OWN STORYSPHERE"/>
           <div className="flex gap-6 mt-8">
-            <button ref={getStartedRef} onClick={()=>{ navigate('/create')}} className="btn-get-started flex items-center justify-between gap-1 px-8 py-3 rounded-full text-lg font-semibold text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-lg shadow-pink-500/40 hover:scale-105 transition-transform duration-300 hover:shadow-pink-400/60">
+            <button ref={getStartedRef} onClick={()=>{ navigate(`${window.innerWidth > 768 ? "/create" : "/storyType"}`)}} className="btn-get-started flex items-center justify-between gap-1 px-8 py-3 rounded-full text-lg font-semibold text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-lg shadow-pink-500/40 hover:scale-105 transition-transform duration-300 hover:shadow-pink-400/60">
               ✨ Get Started <ArrowRightIcon size={20}/>
             </button>
             {!userId && 
@@ -317,7 +250,8 @@ const LandingPage : React.FC = ()=> {
           </div>
 
         </section>
-        
+        {window.innerWidth > 768 &&
+        <div>
         {/* Features Section */}
         <section className="flex-col items-center">
           <div
@@ -391,7 +325,8 @@ const LandingPage : React.FC = ()=> {
       </button>
     </section>
 
-
+      </div>
+      }
 
       </div>
             

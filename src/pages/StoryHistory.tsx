@@ -176,15 +176,12 @@ export default function StoryHistory() {
     <div className="h-screen overflow-x-scroll bg-gradient-to-b from-gray-900 via-purple-900 to-black p-8 font-sans flex flex-col items-center">
       {/* branding */}
       <div ref={logoRef} className="flex flex-col items-center gap-2 mb-8">
-        <h1 className="text-4xl font-bold tracking-wide flex items-center gap-2">
-          <span className="text-purple-600">Story</span>
-          <span className="text-pink-500">Sphere</span>
-        </h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+        <p className="text-gray-400 text-sm">
           Your personal AI storytelling companion ✨
         </p>
       </div>
-      <h2 className="text-2xl self-start pl-[5dvw] sm:pl-[12.5dvw] font-bold mb-8 text-start text-white history-heading">
+      <h2 className="text-2xl self-start pl-[5dvw] sm:pl-[12.5dvw] font-bold mb-8 text-start text-white/80 history-heading">
         My Stories
       </h2>
 
@@ -193,7 +190,7 @@ export default function StoryHistory() {
           Loading stories...
         </p>
       ) : (
-        <div className="flex flex-col items-center gap-6 w-full">
+        <div className="flex flex-col items-center gap-6 w-full pb-25 md:pb-0">
           {stories.map((story, index) => (
             <div
               key={index}
@@ -203,7 +200,7 @@ export default function StoryHistory() {
               className="bg-white/20 backdrop-blur-lg rounded-2xl border border-purple-500 p-3 transition-all duration-300 shadow-md hover:shadow-white/50 flex flex-col gap-2 w-[90dvw] sm:w-[70dvw]"
             >
               {/* Title */}
-              <div className="flex items-center gap-2 text-white font-semibold text-lg">
+              <div className="flex items-center gap-2 text-white font-semibold text-md sm:text-lg">
                 <Music className="w-5 h-5" />
                 {story.title}
               </div>

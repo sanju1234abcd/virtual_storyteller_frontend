@@ -7,13 +7,15 @@ import { FloatingNav } from './components/ui/floating-navbar';
 import VerifyPage from './pages/VerifyPage';
 import PromptCollecterPage from './pages/PromptCollecter';
 import StoryTellingPage from './pages/StoryTellingPage';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from './AppContext';
 import DashBoardPage from './pages/DashBoardPage';
 import PageNotFound from './pages/PageNotFound';
 import StoryHistory from './pages/StoryHistory';
 import VoiceGenerationPage from './pages/VoiceGenerationPage';
 import LoadingPage from './pages/LoadingPage';
+import DockNavbar from './components/DockNavbar';
+import StoryTypePage from './pages/StoryTypePage';
 
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
   const [loading,setLoading] = useState(true)
   const {setUserId} = useContext(AppContext)
 
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   useEffect(()=>{
     (async()=>{
       try{
@@ -73,22 +77,97 @@ function App() {
     
   },[])
 
+  // Starry background
+    useEffect(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+  
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+  
+      type Star = { x: number; y: number; radius: number; speed: number };
+      let stars: Star[] = [];
+  
+      for (let i = 0; i < 100; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5,
+          speed: Math.random() * 0.5 + 0.05,
+        });
+      }
+  
+      const drawStars = () => {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "white";
+        stars.forEach((star) => {
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      };
+  
+      const updateStars = () => {
+        stars.forEach((star) => {
+          star.y += star.speed;
+          if (star.y > height) {
+            star.y = 0;
+            star.x = Math.random() * width;
+          }
+        });
+      };
+  
+      let animationFrameId: number;
+      const animate = () => {
+        drawStars();
+        updateStars();
+        animationFrameId = requestAnimationFrame(animate);
+      };
+      animate();
+  
+      const handleResize = () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      };
+      window.addEventListener("resize", handleResize);
+  
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        cancelAnimationFrame(animationFrameId);
+      };
+    }, []);
+
 
   return (
-    <div className='h-full w-screen bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000]'>
-      <FloatingNav navItems={navItems} className='bg-white/20 backdrop-blur-md border border-white/30 shadow-lg hover:scale-115 hover:border-0.5 hover:border-gray-300 transition-all duration-300' />
+    <div className='relative h-full w-screen bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000]'>
+      <FloatingNav navItems={navItems} className='bg-white/20 hidden md:flex backdrop-blur-md border border-white/30 shadow-lg hover:scale-115 hover:border-0.5 hover:border-gray-300 transition-all duration-300' />
+      {/* Star background */}
+      <canvas
+        ref={canvasRef}
+        className={`fixed top-0 left-0 w-screen h-screen z-20 pointer-events-none ${loading ? "hidden" : ""}`}
+      />
      {!loading && 
+     <>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/storytelling" element={<StoryTellingPage />} />
         <Route path="/verify" element={<VerifyPage />} />
+        <Route path="/storyType" element={<StoryTypePage />} />
         <Route path="/create" element={<PromptCollecterPage />} />
         <Route path="/voice" element={<VoiceGenerationPage />} />
         <Route path="/dashboard" element={<DashBoardPage />} />
         <Route path="/history" element={<StoryHistory />} />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
+      <DockNavbar />
+      </>
       }
       {loading && <LoadingPage/>}
     </div>

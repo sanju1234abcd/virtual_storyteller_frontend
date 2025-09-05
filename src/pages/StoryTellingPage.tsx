@@ -33,81 +33,6 @@ const StoryTellingPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Starry background
-  useEffect(() => {
-    const canvas = document.createElement("canvas");
-    canvas.style.position = "fixed";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.width = "100vw";
-    canvas.style.height = "100vh";
-    canvas.style.zIndex = "0";
-    canvas.style.pointerEvents = "none";
-    document.body.appendChild(canvas);
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
-    type Star = { x: number; y: number; radius: number; speed: number };
-    let stars: Star[] = [];
-
-    for (let i = 0; i < 100; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.5,
-        speed: Math.random() * 0.5 + 0.05,
-      });
-    }
-
-    const drawStars = () => {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "white";
-      stars.forEach((star) => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    };
-
-    const updateStars = () => {
-      stars.forEach((star) => {
-        star.y += star.speed;
-        if (star.y > height) {
-          star.y = 0;
-          star.x = Math.random() * width;
-        }
-      });
-    };
-
-    let animationFrameId: number;
-    const animate = () => {
-      drawStars();
-      updateStars();
-      animationFrameId = requestAnimationFrame(animate);
-    };
-    animate();
-
-    const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-      document.body.removeChild(canvas);
-    };
-  }, []);
-
   // GSAP animations
   useEffect(() => {
     if (containerRef.current && controlsRef.current) {
@@ -260,12 +185,13 @@ const StoryTellingPage: React.FC = () => {
           checking audio, please wait<LoaderOne/>
         </div>
       )}
+      <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
 
-      <h3 className="text-white text-sm md:text-xl mb-6 font-semibold select-none drop-shadow-lg w-[90%] md:w-[70%]">
+      <h3 className="text-white/80 text-sm md:text-xl mb-6 font-semibold select-none drop-shadow-lg w-[90%] md:w-[70%]">
         Story created, enjoy the adventure (navigating to other pages can hamper/corrupt your audio file,so please stay on this page or download audio to listen later)
       </h3>
 
-      <div ref={containerRef} className="relative z-20 flex flex-col items-center justify-center w-full max-w-3xl h-[80vh] p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg shadow-purple-600/40 select-none">
+      <div ref={containerRef} className="relative z-20 flex flex-col items-center justify-center w-full max-w-3xl h-[80vh] p-2 sm:p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg shadow-purple-600/40 select-none">
         <div className="relative w-full h-full rounded-3xl overflow-hidden cursor-pointer shadow-2xl" onClick={() => setShowTextOnImage(!showTextOnImage)}>
           {!showTextOnImage && (
             <h1 className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30 text-white text-sm md:text-lg lg:text-2xl font-extrabold drop-shadow-lg text-center px-6 select-text max-w-[90%] break-words">
@@ -314,11 +240,11 @@ const StoryTellingPage: React.FC = () => {
         </div>
         
         <div className="flex items-center justify-center gap-2 flex-wrap">
-          <button onClick={handleDownloadText} className="mt-6 w-48 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg transition">
+          <button onClick={handleDownloadText} className="mt-6 w-30 sm:w-48 text-xs sm:text-lg py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg transition">
             Download Story Text
           </button>
-          <button onClick={handleDownloadAudio} className="mt-6 w-48 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg transition">
-            Download Story Audio
+          <button onClick={handleDownloadAudio} className="mt-6 w-30 sm:w-48 text-xs sm:text-lg py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg transition">
+            Download Audio
           </button>
         </div>
       </div>

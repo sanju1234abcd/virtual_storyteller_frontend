@@ -122,10 +122,10 @@ const DashBoardPage: React.FC = () => {
   if(userData && userId){
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 via-purple-900 to-black text-white p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] text-white p-6">
       {/* branding */}
       <div ref={logoRef} className="flex flex-col items-center gap-2 mb-8">
-        <h1 className="text-2xl sm:text-3xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+        <h1 className="text-3xl text-center font-lobster mb-0 sm:mb-4 text-white"> SWARN </h1>
         <p className="text-gray-400 text-sm">
           Your personal AI storytelling dashboard ✨
         </p>
@@ -135,7 +135,7 @@ const DashBoardPage: React.FC = () => {
         className="w-full max-w-3xl sm:bg-white/10 sm:backdrop-blur-lg sm:rounded-3xl sm:shadow-2xl p-8 space-y-8 sm:border sm:border-white/20 pb-15 md:pb-0"
       >
         {/* Profile Section */}
-        <div className="flex items-center justify-start flex-wrap gap-4 bg-gradient-to-r from-purple-600/30 to-pink-600/30 p-4 rounded-2xl shadow-lg">
+        <div className="flex items-center justify-start flex-wrap gap-4 bg-gradient-to-r from-purple-600/20 to-pink-600/10 p-4 rounded-2xl shadow-lg">
           <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 flex items-center justify-center font-bold text-2xl">
             {userData.name[0]}
           </div>
@@ -164,7 +164,7 @@ const DashBoardPage: React.FC = () => {
           <div className="group flex items-center gap-4 bg-white/5 p-5 rounded-2xl border border-pink-500/30 hover:border-pink-400/70 transition-all duration-300 shadow-md hover:shadow-pink-500/30">
             <BookOpen className="text-pink-400 group-hover:scale-110 transition" />
             <div>
-              <p className="text-sm text-gray-400">Daily Limit</p>
+              <p className="text-sm text-gray-400">Daily Credit Limit</p>
               <p
                 
                 className="font-semibold"
@@ -177,7 +177,7 @@ const DashBoardPage: React.FC = () => {
           <div className="group flex items-center gap-4 bg-white/5 p-5 rounded-2xl border border-green-500/30 hover:border-green-400/70 transition-all duration-300 shadow-md hover:shadow-green-500/30">
             <CheckCircle className="text-green-400 group-hover:scale-110 transition" />
             <div>
-              <p className="text-sm text-gray-400">Created Today</p>
+              <p className="text-sm text-gray-400">Credit Used Today</p>
               <p
                 
                 className="font-semibold"
@@ -201,9 +201,9 @@ const DashBoardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Total Stories */}
+        {/* Total Credits */}
         <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 p-6 rounded-2xl text-center border border-white/20 shadow-lg">
-          <p className="text-sm text-gray-300">Total Stories Created</p>
+          <p className="text-sm text-gray-300">Total Credits Used</p>
           <p
             className="text-4xl font-extrabold text-purple-400 drop-shadow-lg"
           >

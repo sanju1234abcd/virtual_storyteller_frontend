@@ -173,10 +173,10 @@ export default function StoryHistory() {
   };
 
   return (
-    <div className="h-screen overflow-x-scroll bg-gradient-to-b from-gray-900 via-purple-900 to-black p-8 font-sans flex flex-col items-center">
+    <div className="h-screen overflow-x-scroll bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] p-8 font-sans flex flex-col items-center">
       {/* branding */}
       <div ref={logoRef} className="flex flex-col items-center gap-2 mb-8">
-        <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+        <h1 className="text-3xl text-center font-lobster mb-0 sm:mb-4 text-white"> SWARN </h1>
         <p className="text-gray-400 text-sm">
           Your personal AI storytelling companion ✨
         </p>

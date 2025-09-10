@@ -44,21 +44,25 @@ const StoryTypePage : React.FC = () => {
 
     if(window.innerWidth < 768){
       return (
-    <div className='h-screen w-screen pt-12'>
+    <div className='h-fit w-screen pt-12'>
       <div ref={logoRef} className="flex flex-col items-center gap-2 mb-8">
-        <h1 className="text-2xl sm:text-3xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+        <h1 className="text-3xl text-center font-lobster mb-0 sm:mb-4 text-white"> SWARN </h1>
         <p className="text-gray-300 text-md">
           Choose what you want to create
         </p>
       </div>
       <div className="w-full h-fit flex flex-col items-center justify-center gap-10 pb-20">
         <div className="type h-36 w-[80%] rounded-lg bg-gradient-to-br from-pink-400 via-pink-200 to-blue-400" onClick={()=> navigate("/create")}>
-            <h3 className='text-2xl font-medium font-lobster flex justify-center gap-2 items-center text-center text-blue-900'> create story <ArrowRightIcon size={20} /> </h3>
+            <h3 className='text-2xl font-medium font-lobster flex justify-center gap-2 items-center text-center text-blue-900'> Create Story <ArrowRightIcon size={20} /> </h3>
             <p className="text-blue-700 text-md px-3 text-center font-medium"> let your imagination run wild , create wonderful stories from your imagination</p>
         </div>
         <div className="type h-36 w-[80%] rounded-lg bg-gradient-to-br from-pink-400 via-pink-200 to-blue-400" onClick={()=> navigate("/voice")}>
-            <h3 className='text-2xl font-medium font-lobster flex justify-center gap-2 items-center text-center text-blue-900'> Narrate story <ArrowRightIcon size={20} /> </h3>
+            <h3 className='text-2xl font-medium font-lobster flex justify-center gap-2 items-center text-center text-blue-900'> Narrate Story <ArrowRightIcon size={20} /> </h3>
             <p className="text-blue-700 text-md px-3 text-center font-medium"> Have your own text ? let us narrate it in high quality voice , be it for social media content or your own stories</p>
+        </div>
+        <div className="type h-36 w-[80%] rounded-lg bg-gradient-to-br from-pink-400 via-pink-200 to-blue-400" onClick={()=> navigate("/image")}>
+            <h3 className='text-2xl font-medium font-lobster flex justify-center gap-2 items-center text-center text-blue-900'> Create Image <ArrowRightIcon size={20} /> </h3>
+            <p className="text-blue-700 text-md px-3 text-center font-medium"> special feature ! edit or generate high quality images . be it for your stories or social media content</p>
         </div>
       </div>
     </div>

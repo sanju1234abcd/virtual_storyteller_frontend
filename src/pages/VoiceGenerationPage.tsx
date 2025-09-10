@@ -205,18 +205,15 @@ const VoiceGenerationPage: React.FC = () => {
       ref={containerRef}
       className="relative h-fit flex flex-col items-center justify-center bg-gradient-to-br from-[#0a1a2f] via-[#2b2e4a] to-[#000000] text-white px-4 py-6"
     >
-      <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+      <h1 className="text-3xl text-center font-lobster mb-0 sm:mb-4 text-white"> SWARN </h1>
       <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 mt-4 text-center">
         🎙️ <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">Create Your Custom Narration</span>
       </h1>
+        {window.innerWidth > 768 &&
       <p className="text-sm sm:text-lg w-[80%] sm:w-[90%] text-center text-white/60 mb-2">
-        {window.innerWidth > 768 ? 
-          "Convert your text into lifelike speech with customizable narration styles . be it for your youtube shorts or an audiobook for your own story with a whopping 10000 characters limit" 
-          :
-          "Convert your text into lifelike speech with a whopping 10000 character limit"
-        }
+          Convert your text into lifelike speech with customizable narration styles . be it for your youtube shorts or an audiobook for your own story with a whopping 10000 characters limit"
       </p>
-
+        }
       <div className="flex flex-col md:flex-row gap-6 w-full max-w-6xl">
         {/* Left Column (Form) */}
         <form

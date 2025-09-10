@@ -18,8 +18,7 @@ import mainLogo from "@/assets/main_logo.jpg"
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { AppContext } from "@/AppContext";
 import { useNavigate } from "react-router-dom";
-import Lottie from "lottie-react";
-import profileBoy from "@/assets/profile_boy.json"
+
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -218,13 +217,6 @@ const LandingPage : React.FC = ()=> {
   return (
     <div className="relative w-screen h-full overflow-x-hidden">
 
-
-    {/*user show*/}
-      {userId && 
-      <div className="fixed top-4 right-4 z-50 h-fit w-fit flex items-center justify-center rounded-full">
-        <Lottie title="go to dashboard" onClick={() => navigate("/dashboard")} animationData={profileBoy} loop={true} className="w-20 h-20 scale-150 cursor-pointer" />
-      </div> }
-      
       {/*content*/}
       
       <div className="relative z-10 text-white h-full">

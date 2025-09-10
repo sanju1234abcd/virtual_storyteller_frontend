@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Home, BookOpen, Mic, CircleUserRound } from "lucide-react";
+import { Home, BookOpen, CircleUserRound, Plus } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { AppContext } from "@/AppContext";
 
@@ -9,7 +9,7 @@ const DockNavbar: React.FC = () => {
   const navItems = [
     { name: "Home", icon: Home, path: "/" },
     { name: "saved stories", icon: BookOpen, path: "/history" },
-    { name: "Create", icon: Mic, path: "/storyType" },
+    { name: "Create", icon: Plus, path: "/storyType" },
     { name: "Profile", icon: CircleUserRound, path: "/dashboard" },
   ];
 

@@ -665,12 +665,12 @@ else{
       {/* Content */}
       <div
         ref={contentRef}
-        className="relative z-20 w-full max-w-5xl rounded-3xl p-4 sm:p-12"
+        className="relative z-20 w-full max-w-5xl rounded-3xl p-4 sm:p-6"
       >
-      <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+      <h1 className="text-3xl text-center font-lobster mb-0 sm:mb-4 text-white"> SWARN </h1>
         <h1
           ref={headingRef}
-          className="text-xl sm:text-2xl md:text-4xl flex flex-wrap items-center justify-center gap-3 font-extrabold text-white mb-8 tracking-tight text-center select-none drop-shadow-lg"
+          className="text-xl sm:text-2xl md:text-4xl flex flex-wrap items-center justify-center gap-3 font-bold text-white mb-8 tracking-tight text-center select-none drop-shadow-lg"
         >
           💡 Share Your Story Ideas of 
             <RotatingText 
@@ -686,6 +686,7 @@ else{
               rotationInterval={2000}
             />
         </h1>
+        {window.innerWidth > 768 &&
         <p
           ref={subtitleRef}
           className="text-gray-300 text-sm md:text-xl mb-2 sm:mb-12 text-center max-w-3xl mx-auto"
@@ -693,7 +694,7 @@ else{
           Enter a prompt or story idea and select your story language. Click any
           suggestion to quickly use it.
         </p>
-
+        }
         <form
           ref={formRef}
           onSubmit={handleSubmit}

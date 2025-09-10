@@ -1,5 +1,5 @@
 import './App.css'
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import SignInPage from './pages/SignInPage';
 import { BookOpenText, HomeIcon, User, UserPlus } from 'lucide-react';
@@ -16,6 +16,9 @@ import VoiceGenerationPage from './pages/VoiceGenerationPage';
 import LoadingPage from './pages/LoadingPage';
 import DockNavbar from './components/DockNavbar';
 import StoryTypePage from './pages/StoryTypePage';
+import ImageGeneration from './pages/ImageGeneration';
+import Lottie from 'lottie-react';
+import profileBoy from "@/assets/profile_boy.json"
 
 
 function App() {
@@ -48,9 +51,11 @@ function App() {
   ];
 
   const [loading,setLoading] = useState(true)
-  const {setUserId} = useContext(AppContext)
+  const { userId , setUserId} = useContext(AppContext)
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(()=>{
     (async()=>{
@@ -152,6 +157,11 @@ function App() {
         ref={canvasRef}
         className={`fixed top-0 left-0 w-screen h-screen z-20 pointer-events-none ${loading ? "hidden" : ""}`}
       />
+      {/*user show*/}
+      {userId && 
+      <div className="fixed top-1 right-2 z-50 h-fit w-fit flex items-center justify-center rounded-full scale-65 sm:scale-100">
+        <Lottie title="go to dashboard" onClick={() => navigate("/dashboard")} animationData={profileBoy} loop={true} className="w-20 h-20 scale-150 cursor-pointer" />
+      </div> }
      {!loading && 
      <>
       <Routes>
@@ -164,6 +174,7 @@ function App() {
         <Route path="/voice" element={<VoiceGenerationPage />} />
         <Route path="/dashboard" element={<DashBoardPage />} />
         <Route path="/history" element={<StoryHistory />} />
+        <Route path="/image" element={<ImageGeneration />} />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
       <DockNavbar />

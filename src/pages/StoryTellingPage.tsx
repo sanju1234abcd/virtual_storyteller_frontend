@@ -185,9 +185,9 @@ const StoryTellingPage: React.FC = () => {
           checking audio, please wait<LoaderOne/>
         </div>
       )}
-      <h1 className="text-2xl text-center font-lobster mb-0 sm:mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"> SWARN </h1>
+      <h1 className="text-3xl text-center font-lobster mb-0 sm:mb-4 text-white"> SWARN </h1>
 
-      <h3 className="text-white/80 text-sm md:text-xl mb-6 font-semibold select-none drop-shadow-lg w-[90%] md:w-[70%]">
+      <h3 className="text-white/80 text-xs sm:text-sm md:text-xl mb-6 font-semibold select-none drop-shadow-lg w-[90%] md:w-[70%]">
         Story created, enjoy the adventure (navigating to other pages can hamper/corrupt your audio file,so please stay on this page or download audio to listen later)
       </h3>
 
